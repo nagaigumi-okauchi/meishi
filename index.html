@@ -112,11 +112,12 @@
 
     document.getElementById('btnSave').addEventListener('click',function(e){
       e.stopPropagation();
-      var vcfB64='QkVHSU46VkNBUkQNClZFUlNJT046My4wDQpOOuWyoeWGhTvkuIDpg447OzsNCkZOOuWyoeWGhSDkuIDpg44NCk9SRzrmoKrlvI/kvJrnpL4g5rC45LqV57WEDQpUSVRMRTrllrbmpa3pg6gg5qyh6ZW3DQpURUw7VFlQRT1DRUxMOjA5MC04NjkyLTc1MTgNClRFTDtUWVBFPVdPUkssVk9JQ0U6MDg3LTg2NS04NjU4DQpURUw7VFlQRT1XT1JLLEZBWDowODctODY1LTg2OTkNCkVNQUlMOm9rYXVjaGkuMTZAa2stbmFnYWlndW1pLmNvLmpwDQpBRFI7VFlQRT1XT1JLOjs76aaZ5bed55yM6auY5p2+5biC5p6X55S6MzUx55Wq5ZywMjM7Ozs75pel5pysDQpFTkQ6VkNBUkQ=';
-      var vcfText=decodeURIComponent(escape(atob(vcfB64)));
-      var thisUrl=window.location.href;
-      var vcfFinal=vcfText.replace('END:VCARD','URL:'+thisUrl+'\r\nEND:VCARD');
-      var blob=new Blob([vcfFinal],{type:'text/vcard;charset=utf-8'});
+      var originalBase64=`QkVHSU46VkNBUkQNClZFUlNJT046My4wDQpOOuWyoeWGhTvkuIDpg447OzsNCkZOOuWyoeWGhSDkuIDpg44NCk9SRzrmoKrlvI/kvJrnpL4g5rC45LqV57WEDQpUSVRMRTrllrbmpa3pg6gg5qyh6ZW3DQpURUw7VFlQRT1DRUxMOjA5MC04NjkyLTc1MTgNClRFTDtUWVBFPVdPUkssVk9JQ0U6MDg3LTg2NS04NjU4DQpURUw7VFlQRT1XT1JLLEZBWDowODctODY1LTg2OTkNCkVNQUlMOm9rYXVjaGkuMTZAa2stbmFnYWlndW1pLmNvLmpwDQpBRFI7VFlQRT1XT1JLOjs76aaZ5bed55yM6auY5p2+5biC5p6X55S6MzUx55Wq5ZywMjM7Ozs75pel5pysDQpFTkQ6VkNBUkQ=`;
+      var dynamicUrl=window.location.href;
+      var vcardText=decodeURIComponent(escape(window.atob(originalBase64)));
+      var addition='URL;type=WORK:'+dynamicUrl+'\r\nNOTE:\u300aデジタル名刺URL\u300b '+dynamicUrl+'\r\nEND:VCARD';
+      vcardText=vcardText.replace(/\r?\n?END:VCARD/i,'\r\n'+addition);
+      var blob=new Blob([vcardText],{type:'text/vcard;charset=utf-8'});
       var burl=URL.createObjectURL(blob);
       var a=document.createElement('a');
       a.href=burl;
